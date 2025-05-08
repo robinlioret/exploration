@@ -1,0 +1,9 @@
+.vscode
+.idea
+*.iml
+
+.env
+
+*.tfstate
+.terraform/
+*.tfstate.backup
