@@ -1,6 +1,6 @@
 module "example" {
-    source = "../.."
+  source = "../.."
 
-    preset = "c1w3-exposed"
-    name = "example-complete"
+  preset = "c1w3-exposed"
+  name   = "example-complete"
 }

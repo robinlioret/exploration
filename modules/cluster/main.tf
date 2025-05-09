@@ -1,6 +1,6 @@
 locals {
   kubeconfig_path = pathexpand(var.kubeconfig_path)
-  config = yamldecode(file("${path.module}/presets/${var.preset}.yaml"))
+  config          = yamldecode(file("${path.module}/presets/${var.preset}.yaml"))
 }
 
 resource "kind_cluster" "this" {
@@ -16,14 +16,14 @@ resource "kind_cluster" "this" {
     dynamic "node" {
       for_each = local.config.nodes
       content {
-        role = node.value.role
+        role   = node.value.role
         labels = try(node.value.labels, null)
 
         dynamic "extra_port_mappings" {
           for_each = try(node.value.extraPortMappings, [])
           content {
             container_port = extra_port_mappings.value.containerPort
-            host_port = extra_port_mappings.value.hostPort
+            host_port      = extra_port_mappings.value.hostPort
           }
         }
       }

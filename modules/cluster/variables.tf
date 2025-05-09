@@ -17,7 +17,7 @@ variable "kubeconfig_path" {
 }
 
 variable "preset" {
-  type = string
-  default = "c1w0-exposed"
+  type        = string
+  default     = "c1w0-exposed"
   description = "Name of the yaml file containing the preset configuration."
 }
