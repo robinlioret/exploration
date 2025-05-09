@@ -1,5 +1,23 @@
 variable "preset" {
-  type = string
-  default = "simple"
-  description = "Name of the configuration preset to use to create the cluster."
+  type        = string
+  default     = "default"
+  description = "Name of the configuration preset to use to create the cluster. One of: default, c1w0-exposed"
+}
+
+variable "node_image" {
+  type        = string
+  default     = null
+  description = "Name of the node image."
+}
+
+variable "name" {
+  type        = string
+  default     = "sandbox"
+  description = "Name of the Kind cluster"
+}
+
+variable "kubeconfig_path" {
+  type        = string
+  default     = null
+  description = "Path to the kubeconfig file to use."
 }

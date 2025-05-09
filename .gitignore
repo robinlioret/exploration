@@ -7,3 +7,6 @@
 *.tfstate
 .terraform/
 *.tfstate.backup
+*.lock.hcl
+
+*-config
