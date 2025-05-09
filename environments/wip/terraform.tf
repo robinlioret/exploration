@@ -6,7 +6,7 @@ terraform {
     }
 
     kubernetes = {
-      source = "hashicorp/kubernetes"
+      source  = "hashicorp/kubernetes"
       version = ">=2.36.0"
     }
   }
@@ -14,6 +14,6 @@ terraform {
 
 provider "kubernetes" {
   config_context = module.cluster.cluster_name
-  host = module.cluster.endpoint
-  config_path = module.cluster.kubeconfig_path
+  host           = module.cluster.endpoint
+  config_path    = module.cluster.kubeconfig_path
 }
