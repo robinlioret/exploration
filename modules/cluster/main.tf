@@ -2,6 +2,7 @@ resource "kind_cluster" "this" {
   name            = var.name
   kubeconfig_path = var.kubeconfig_path
   wait_for_ready  = true
+  node_image = var.node_image
 
   kind_config {
     api_version = "kind.x-k8s.io/v1alpha4"

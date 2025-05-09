@@ -1,9 +1,3 @@
-variable "preset" {
-  type        = string
-  default     = "default"
-  description = "Name of the configuration preset to use to create the cluster. One of: default, c1w0-exposed"
-}
-
 variable "node_image" {
   type        = string
   default     = null
