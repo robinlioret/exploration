@@ -38,3 +38,18 @@ cat > README.md << EOF
 
 Description of what the module is used for.
 EOF
+
+cat > up.sh << EOF
+#!/bin/bash
+
+terraform apply --auto-approve --target=module.cluster
+terraform apply --auto-approve
+EOF
+
+cat > down.sh << EOF
+#!/bin/bash
+
+terraform destroy --auto-approve
+EOF
+chmod +x up.sh
+chmod +x down.sh

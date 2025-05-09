@@ -1,5 +1,5 @@
 module "cluster" {
-    source = "../../modules/cluster"
+  source = "../../modules/cluster"
 
-    name = "sandbox" # TODO change the name
+  name = "sandbox" # TODO change the name
 }
