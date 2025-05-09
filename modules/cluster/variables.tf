@@ -15,3 +15,9 @@ variable "kubeconfig_path" {
   default     = "~/.kube/config"
   description = "Path to the kubeconfig file to use."
 }
+
+variable "preset" {
+  type = string
+  default = "c1w0-exposed"
+  description = "Name of the yaml file containing the preset configuration."
+}

@@ -1,5 +1,6 @@
 locals {
   kubeconfig_path = pathexpand(var.kubeconfig_path)
+  config = yamldecode(file("${path.module}/presets/${var.preset}.yaml"))
 }
 
 resource "kind_cluster" "this" {
@@ -9,34 +10,23 @@ resource "kind_cluster" "this" {
   node_image      = var.node_image
 
   kind_config {
-    api_version = "kind.x-k8s.io/v1alpha4"
-    kind        = "Cluster"
+    api_version = local.config.apiVersion
+    kind        = local.config.kind
 
-    node {
-      role = "control-plane"
-    }
+    dynamic "node" {
+      for_each = local.config.nodes
+      content {
+        role = node.value.role
+        labels = try(node.value.labels, null)
 
-    node {
-      role = "worker"
-
-      labels = {
-        "feature.node.kubernetes.io/port-mapping" = "true"
+        dynamic "extra_port_mappings" {
+          for_each = try(node.value.extraPortMappings, [])
+          content {
+            container_port = extra_port_mappings.value.containerPort
+            host_port = extra_port_mappings.value.hostPort
+          }
+        }
       }
-
-      extra_port_mappings {
-        container_port = 80
-        host_port      = 80
-      }
-      extra_port_mappings {
-        container_port = 443
-        host_port      = 443
-      }
-    }
-    node {
-      role = "worker"
-    }
-    node {
-      role = "worker"
     }
   }
 }
