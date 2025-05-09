@@ -1,9 +1,9 @@
 output "cluster_name" {
-  value = [kind_cluster.this.endpoint, "kind-${var.name}"][1]
+  value = "kind-${var.name}"
 }
 
 output "kubeconfig_path" {
-  value = [kind_cluster.this.endpoint, var.kubeconfig_path][1]
+  value = var.kubeconfig_path
 }
 
 output "endpoint" {
