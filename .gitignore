@@ -10,3 +10,5 @@
 *.lock.hcl
 
 *-config
+*.temp.*
+*.temp
