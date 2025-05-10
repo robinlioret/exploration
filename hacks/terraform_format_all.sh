@@ -1,4 +1,5 @@
 #!/bin/bash
+# Format all the terraform repository found.
 
 declare -a DIRECTORIES
 find . -name "*.tf" | while read line; do

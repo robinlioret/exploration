@@ -1,4 +1,6 @@
 #!/bin/bash
+# MUST BE RUN FROM THE NEW MODULE DIRECTORY. NOT FROM THE EXAMPLE DIRECTORY.
+# Initialize an example.
 
 test -z "$1" && exit 1
 

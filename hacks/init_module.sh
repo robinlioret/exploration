@@ -1,4 +1,5 @@
 #!/bin/bash
+# MUST BE RUN FROM THE NEW MODULE DIRECTORY.
 # Initialize a Terraform module
 
 echo "1.11.4" > .terraform-version

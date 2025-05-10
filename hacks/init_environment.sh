@@ -1,5 +1,6 @@
 #!/bin/bash
-# Initialize a Terraform module
+# MUST BE RUN FROM THE NEW ENVIRONMENT DIRECTORY.
+# Initialize a Terraform environment.
 
 test -z "$1" && exit 1
 

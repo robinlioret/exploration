@@ -1,3 +1,1 @@
-# Example X
-
-What does this example do.
+Create a kind cluster and use all the available customisations.
