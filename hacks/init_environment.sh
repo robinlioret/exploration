@@ -17,40 +17,50 @@ touch variables.tf
 
 cat > terraform.tf << EOF
 terraform {
-    required_providers {
-        kind = {
-        source  = "tehcyx/kind"
-        version = ">=0.8.0"
-        }
+  required_providers {
+    kind = {
+      source  = "tehcyx/kind"
+      version = ">=0.8.0"
     }
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = ">=3.5.0"
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = ">=2.5.2"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">=2.36.0"
+    }
+  }
+}
+
+provider "kubernetes" {
+  config_context = module.cluster.cluster_name
+  host           = module.cluster.endpoint
+  config_path    = module.cluster.kubeconfig_path
 }
 EOF
 
-cat > cluster.tf << EOF
-module "cluster" {
-    source = "../../modules/cluster"
+cat > base.tf << EOF
+module "dns" {
+  source = "../../modules/dns"
 
-    name = "sandbox" # TODO change the name
+  domain = "sandbox.local"
 }
+
+module "cluster" {
+  source = "../../modules/cluster"
+
+  name = "sandbox"
+}
+
 EOF
 
 cat > README.md << EOF
-# Environment X
+# X
 
 Description of what the module is used for.
 EOF
-
-cat > up.sh << EOF
-#!/bin/bash
-
-terraform apply --auto-approve --target=module.cluster
-terraform apply --auto-approve
-EOF
-
-cat > down.sh << EOF
-#!/bin/bash
-
-terraform destroy --auto-approve
-EOF
-chmod +x up.sh
-chmod +x down.sh

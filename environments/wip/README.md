@@ -1,3 +1,3 @@
-# Environment X
+# WIP
 
-Description of what the module is used for.
+Work in progress environment. Used to test new modules (or modules in development)

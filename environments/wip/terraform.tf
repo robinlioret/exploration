@@ -4,7 +4,14 @@ terraform {
       source  = "tehcyx/kind"
       version = ">=0.8.0"
     }
-
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = ">=3.5.0"
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = ">=2.5.2"
+    }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = ">=2.36.0"
