@@ -16,11 +16,7 @@ resource "docker_container" "coredns" {
     external = 53
     protocol = "udp"
   }
-  ports { # Healthcheck
-    internal = 8080
-    external = 8080
-  }
-
+  
   volumes {
     container_path = "/etc/coredns/Corefile"
     host_path      = local.coredns_config_path
