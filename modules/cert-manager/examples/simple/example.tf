@@ -5,5 +5,5 @@ module "cluster" {
 module "example-cert-manager" {
   source = "../.."
 
-  depends_on = [module.cluster]
+  depends_on = [module.cluster.endpoint]
 }

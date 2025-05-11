@@ -12,3 +12,6 @@
 *-config
 *.temp.*
 *.temp
+
+*.key
+*.crt
