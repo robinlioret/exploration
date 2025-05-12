@@ -9,6 +9,9 @@
 *.tfstate.backup
 *.lock.hcl
 
+.terragrunt-cache
+.terragrunt-stack
+
 *-config
 *.temp.*
 *.temp
