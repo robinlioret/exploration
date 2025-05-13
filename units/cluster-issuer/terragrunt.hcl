@@ -10,5 +10,5 @@ dependency "cert-manager" {
   config_path                             = "../cert-manager"
   mock_outputs                            = {}
   mock_outputs_allowed_terraform_commands = ["plan", "validate"]
-  skip_outputs = true
+  skip_outputs                            = true
 }
