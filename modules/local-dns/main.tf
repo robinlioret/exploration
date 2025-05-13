@@ -41,5 +41,5 @@ resource "local_file" "corefile" {
 
 resource "local_file" "zonefile" {
   filename = local.coredns_zonefile_path
-  content  = templatefile("${path.module}/templates/zonefile.tftpl", { domain = var.domain })
+  content  = templatefile("${path.module}/templates/zonefile.tftpl", { domain = var.domain, local-ip = var.local-ip })
 }
