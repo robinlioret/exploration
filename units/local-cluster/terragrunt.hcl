@@ -3,13 +3,9 @@ include "root" {
 }
 
 terraform {
-  source = "../../modules/local-cluster"
+  source = "${get_repo_root()}/modules/local-cluster"
 }
 
 inputs = {
   preset = "c1w3-exposed"
-}
-
-dependencies {
-  paths = ["../local-dns"]
 }
