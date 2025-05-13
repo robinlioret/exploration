@@ -3,7 +3,7 @@ include "root" {
 }
 
 terraform {
-  source = "${get_repo_root()}/modules/local-dns"
+  source = "."
 }
 
 inputs = {
