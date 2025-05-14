@@ -3,6 +3,11 @@ unit "local-dns" {
   path   = "local-dns"
 }
 
+unit "git-repo" {
+  source = "${get_repo_root()}/units/forgejo"
+  path   = "git-repo"
+}
+
 unit "cluster" {
   source = "${get_repo_root()}/units/cluster"
   path   = "cluster"
