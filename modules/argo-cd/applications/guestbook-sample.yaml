@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: guestbook-simple
+  namespace: default
+spec:
+  project: default
+  source:
+    path: guestbook
+    repoURL: "http://forgejo.sandbox.local:3000/administrator/argocd-example-apps.git"
+    targetRevision: HEAD
+  destination:
+    namespace: default
+    server: "https://kubernetes.default.svc"
