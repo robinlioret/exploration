@@ -3,9 +3,9 @@ unit "local-dns" {
   path   = "local-dns"
 }
 
-unit "git-repo" {
+unit "forgejo" {
   source = "${get_repo_root()}/units/forgejo"
-  path   = "git-repo"
+  path   = "forgejo"
 }
 
 unit "cluster" {
@@ -21,4 +21,9 @@ unit "cert-manager" {
 unit "cluster-issuer" {
   source = "${get_repo_root()}/units/cluster-issuer"
   path   = "cluster-issuer"
+}
+
+unit "argocd" {
+  source = "${get_repo_root()}/units/argocd"
+  path   = "argocd"
 }

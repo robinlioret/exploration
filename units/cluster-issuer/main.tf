@@ -58,6 +58,7 @@ resource "kubernetes_manifest" "ca-issuer" {
   }
 }
 
+# TODO: export ca cert for browser set up
 # data "kubernetes_ressource" "ca-cert" {
 #   api_version = ""
 # }
