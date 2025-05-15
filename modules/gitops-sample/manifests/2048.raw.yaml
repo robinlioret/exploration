@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: guestbook-simple
-  namespace: default
+  name: app-2048-raw
+  namespace: argo-cd
 spec:
   project: default
   source:
-    path: guestbook
-    repoURL: "http://forgejo.sandbox.local:3000/administrator/argocd-example-apps.git"
+    path: 2048/raw
+    repoURL: "http://forgejo.sandbox.local:3000/administrator/exploration-gitops.git"
     targetRevision: HEAD
   destination:
     namespace: default
