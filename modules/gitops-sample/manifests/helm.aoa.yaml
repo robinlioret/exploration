@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: helm-aoa
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - git:
+        repoURL: http://forgejo.sandbox.local:3000/administrator/exploration-gitops.git
+        revision: HEAD
+        files:
+          - path: helm/**/config.json
+  template:
+    metadata:
+      name: "{{ .path.basename }}-helm"
+      namespace: argocd
+    spec:
+      project: "default"
+      sources:
+        - repoURL: "{{ .repoURL }}"
+          targetRevision: "{{ .chartVersion }}"
+          chart: "{{ .chartName }}"
+          helm:
+            valueFiles:
+              - $valuesRef/{{ .path.path }}/values.yaml
+        - repoURL: http://forgejo.sandbox.local:3000/administrator/exploration-gitops.git
+          targetRevision: HEAD
+          ref: valuesRef
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{ .path.basename }}"
+      syncPolicy:
+        automated:
+          enabled: true
+          prune: true
+          allowEmpty: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
