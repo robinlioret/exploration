@@ -10,14 +10,5 @@ nodes:
         hostPort: 80
       - containerPort: 443
         hostPort: 443
-    extraMounts:
-      - hostPath: w1
-        containerPath: /data
   - role: worker
-    extraMounts:
-      - hostPath: w2
-        containerPath: /data
   - role: worker
-    extraMounts:
-      - hostPath: w3
-        containerPath: /data

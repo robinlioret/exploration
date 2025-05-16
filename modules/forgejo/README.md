@@ -16,6 +16,6 @@ The clic on Install Forgejo.
 
 Create > New migration
 
-Then "migrate" the repository of the argoproj gitops examples https://github.com/argoproj/argocd-example-apps.git. That wll be useful to test ArgoCD.
+Then "migrate" the repository of the associated gitops sample https://github.com/robinlioret/exploration-gitops.git. That wll be useful to test ArgoCD.
 
-You can cloud this repo from the forgejo locally to edit and test stuff: `git clone http://forgejo.sandbox.local:3000/administrator/argocd-example-apps.git`
+You can cloud this repo from the forgejo locally to edit and test stuff: `git clone http://forgejo.sandbox.local:3000/administrator/exploration-gitops.git`
