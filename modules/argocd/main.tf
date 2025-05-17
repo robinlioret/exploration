@@ -8,5 +8,7 @@ resource "helm_release" "this" {
   wait             = true
   wait_for_jobs    = true
 
+
+  values = [file("${path.module}/argocd.values.yaml")]
   # TODO: add terminal capability: https://argo-cd.readthedocs.io/en/latest/operator-manual/web_based_terminal/#enabling-the-terminal
 }
