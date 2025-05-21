@@ -3,6 +3,6 @@ terraform {
 }
 
 inputs = {
-  preset    = "c1w0-exposed" # Prefer ONE node, it makes easier to work with storage.
+  preset    = "c1w3-exposed" # Prefer ONE node, it makes easier to work with storage.
   data_path = "${get_repo_root()}/data/cluster"
 }

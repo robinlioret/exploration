@@ -10,3 +10,7 @@ server:
       nginx.ingress.kubernetes.io/force-ssl-redirect: !!str true
       nginx.ingress.kubernetes.io/ssl-passthrough: !!str true
       cert-manager.io/cluster-issuer: ca-issuer # Will create the certificate once Cert-Manager is deployed by ArgoCD.
+
+configs:
+  cm:
+    exec.enabled: true
