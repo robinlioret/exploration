@@ -8,7 +8,7 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
     - git:
-        repoURL: http://forgejo.sandbox.local:3000/administrator/exploration-gitops.git
+        repoURL: ${git_repo}
         revision: HEAD
         files:
           - path: helm/**/config.json
@@ -25,7 +25,7 @@ spec:
           helm:
             valueFiles:
               - $valuesRef/{{ .path.path }}/values.yaml
-        - repoURL: http://forgejo.sandbox.local:3000/administrator/exploration-gitops.git
+        - repoURL: ${git_repo}
           targetRevision: HEAD
           ref: valuesRef
       destination:

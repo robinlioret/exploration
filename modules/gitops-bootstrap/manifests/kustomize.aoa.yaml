@@ -8,7 +8,7 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
     - git:
-        repoURL: http://forgejo.sandbox.local:3000/administrator/exploration-gitops.git
+        repoURL: ${git_repo}
         revision: HEAD
         directories:
           - path: kustomize/*
@@ -19,7 +19,7 @@ spec:
     spec:
       project: "default"
       source:
-        repoURL: http://forgejo.sandbox.local:3000/administrator/exploration-gitops.git
+        repoURL: ${git_repo}
         targetRevision: HEAD
         path: "{{ .path.path }}"
       destination:

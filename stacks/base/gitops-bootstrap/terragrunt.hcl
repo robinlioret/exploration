@@ -3,7 +3,7 @@ terraform {
 }
 
 inputs = {
-  sample_2048_raw = true
+  git_repo = "http://forgejo.sandbox.local:3000/administrator/exploration-gitops-local.git"
 }
 
 dependency "argocd" {
