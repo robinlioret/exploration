@@ -15,6 +15,7 @@ nodes:
     extraMounts: &extraMounts
       - hostPath: shared
         containerPath: /data
+        propagation: HostToContainer
 
   - role: worker
     extraMounts: *extraMounts

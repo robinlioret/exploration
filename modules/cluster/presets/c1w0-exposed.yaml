@@ -14,3 +14,4 @@ nodes:
     extraMounts:
       - hostPath: shared
         containerPath: /data
+        propagation: HostToContainer
