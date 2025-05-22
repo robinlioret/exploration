@@ -30,7 +30,7 @@ spec:
           ref: valuesRef
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{ .path.basename }}"
+        namespace: "{{ .namespace | default .path.basename }}"
       syncPolicy:
         automated:
           enabled: true
