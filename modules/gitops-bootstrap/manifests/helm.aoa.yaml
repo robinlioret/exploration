@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
 spec:
   goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
+  # goTemplateOptions: ["missingkey=error"]
   generators:
     - git:
         repoURL: ${git_repo}
@@ -30,7 +30,7 @@ spec:
           ref: valuesRef
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{ .namespace | default .path.basename }}"
+        namespace: "{{ coalesce .namespace .path.basename }}"
       syncPolicy:
         automated:
           enabled: true
@@ -39,4 +39,13 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-          - ServerSideApply=true
+  #         - ServerSideApply=true
+  # templatePatch: |
+  #   spec:
+  #     destination:
+  #       {{- with .namespace }}
+  #       namespace: "{{ .namespace }}"
+  #       {{- else }}
+  #       namespace: "{{ .path.basename }}"
+  #       {{- end }}
+

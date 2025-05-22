@@ -16,8 +16,5 @@
 *.temp.*
 *.temp
 
-*.key
-*.crt
-
 data
 files
