@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ca-node-setup
+  namespace: kube-system
+data:
+  ca.crt: |+
+    ${indent(4, cert)}
+  
+  setup.sh: |
+    echo "$TRUSTED_CERT" > /usr/local/share/ca-certificates/ca.crt && update-ca-certificates && systemctl restart containerd
