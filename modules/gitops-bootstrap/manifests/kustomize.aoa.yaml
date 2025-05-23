@@ -26,6 +26,9 @@ spec:
         server: https://kubernetes.default.svc
         namespace: "{{ .path.basename }}"
       syncPolicy:
+        managedNamespaceMetadata:
+          labels:
+            infra.inc/telepresence-namespace: !!str true
         automated:
           enabled: true
           prune: true
