@@ -31,6 +31,9 @@ IP=$(hostname -i | cut -d' ' -f1)
 REGNAME=${REGISTRY_NAME:-registry.sandbox.local}
 REGPORT=${REGISTRY_PORT:-5001}
 CLUNAME=${CLUSTER_NAME:-sandbox}
+ENABLE_REGISTRY=${REGISTRY:-false}
+ENABLE_ARGOCD=${ARGOCD:-false}
+ENABLE_FORGEJO=${FORGEJO:-false}
 
 # ================================================================================================
 title "CLUSTER"
@@ -153,37 +156,49 @@ fi
 
 # ================================================================================================
 title "REGISTRY"
-if kubectl get namespaces | grep -q registry; then
-  echo "Already installed"
+if $ENABLE_REGISTRY; then
+  if kubectl get namespaces | grep -q registry; then
+    echo "Already installed"
+  else
+    kubectl apply --server-side -f ./registry.yaml
+  fi
 else
-  kubectl apply --server-side -f ./registry.yaml
+  echo "Disabled"
 fi
 
 # ================================================================================================
 title "FORGEJO"
-if kubectl get namespaces | grep -q forgejo; then
-  echo "Already installed"
+if $ENABLE_FORGEJO; then
+  if kubectl get namespaces | grep -q forgejo; then
+    echo "Already installed"
+  else
+    kubectl apply --server-side -f ./forgejo.yaml
+  fi
 else
-  kubectl apply --server-side -f ./forgejo.yaml
+  echo "Disabled"
 fi
 
-# # ================================================================================================
-# title "ARGOCD"
-# add_helm_repo argo https://argoproj.github.io/argo-helm
+# ================================================================================================
+title "ARGOCD"
+if $ENABLE_ARGOCD; then
+  add_helm_repo argo https://argoproj.github.io/argo-helm
 
-# if helm list --all-namespaces --all | grep -q "argocd"; then
-#   echo "Already installed"
-# else
-#   helm install argocd argo/argo-cd --hide-notes  --wait \
-#     --namespace argocd --create-namespace \
-#     --set 'global.domain=argocd.sandbox.local' \
-#     --set 'server.ingress.enabled=true' \
-#     --set 'server.ingress.ingressClassName=nginx' \
-#     --set 'server.ingress.tls=true' \
-#     --set 'server.ingress.annotations.nginx\.ingress\.kubernetes\.io\/force-ssl-redirect=true' \
-#     --set 'server.ingress.annotations.nginx\.ingress\.kubernetes\.io\/ssl-passthrough=true' \
-#     --set 'server.ingress.annotations.cert-manager\.io\/cluster-issuer=ca-issuer' \
-#     --set 'configs.cm.exec\.enabled=true' \
-#     --set 'dex.enabled=false' \
-#     --set 'notifications.enabled=false'
-# fi
+  if helm list --all-namespaces --all | grep -q "argocd"; then
+    echo "Already installed"
+  else
+    helm install argocd argo/argo-cd --hide-notes  --wait \
+      --namespace argocd --create-namespace \
+      --set 'global.domain=argocd.sandbox.local' \
+      --set 'server.ingress.enabled=true' \
+      --set 'server.ingress.ingressClassName=nginx' \
+      --set 'server.ingress.tls=true' \
+      --set 'server.ingress.annotations.nginx\.ingress\.kubernetes\.io\/force-ssl-redirect=true' \
+      --set 'server.ingress.annotations.nginx\.ingress\.kubernetes\.io\/ssl-passthrough=true' \
+      --set 'server.ingress.annotations.cert-manager\.io\/cluster-issuer=ca-issuer' \
+      --set 'configs.cm.exec\.enabled=true' \
+      --set 'dex.enabled=false' \
+      --set 'notifications.enabled=false'
+  fi
+else
+  echo "Disabled"
+fi
