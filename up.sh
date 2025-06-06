@@ -25,28 +25,15 @@ add_helm_repo() {
 # ================================================================================================
 title "INIT"
 action "Create temp dir"
-DIR=${DIR:-/tmp/devenv}
+DIR=${DIR:-$HOME/devenv}
 test -d "$DIR" || mkdir -p "$DIR"
 IP=$(hostname -i | cut -d' ' -f1)
-
-# ================================================================================================
-title "REGISTRY"
 REGNAME=${REGISTRY_NAME:-registry.sandbox.local}
 REGPORT=${REGISTRY_PORT:-5001}
-
-if [ "$(docker inspect -f '{{.State.Running}}' "$REGNAME" 2>/dev/null || true)" != 'true' ]; then
-docker run -d --name "${REGNAME}" --restart=always \
-  -p "127.0.0.1:${REGPORT}:5000" \
-  --network bridge \
-  registry:2
-else
-  action "Running already"
-fi
+CLUNAME=${CLUSTER_NAME:-sandbox}
 
 # ================================================================================================
 title "CLUSTER"
-CLUNAME=${CLUSTER_NAME:-sandbox}
-
 if  kind get clusters -q | grep -q sandbox; then
   action "Running already"
 else
@@ -54,10 +41,6 @@ else
   cat << EOF | kind create cluster --name "$CLUNAME" --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
-containerdConfigPatches:
-- |-
-  [plugins."io.containerd.grpc.v1.cri".registry]
-    config_path = "/etc/containerd/certs.d"
 nodes:
   - role: control-plane
     labels:
@@ -72,18 +55,6 @@ nodes:
         containerPath: /storage
         propagation: HostToContainer
 EOF
-
-  action "Add the registry config to the nodes"
-  REGISTRY_DIR="/etc/containerd/certs.d/localhost:${REGPORT}"
-  for node in $(kind get nodes --name "$CLUNAME"); do
-    docker exec "${node}" mkdir -p "${REGISTRY_DIR}"
-    cat <<EOF | docker exec -i "${node}" cp /dev/stdin "${REGISTRY_DIR}/hosts.toml"
-[host."http://${REGNAME}:5000"]
-EOF
-  done
-
-  action "Connect the registry to the cluster network"
-  docker network connect "kind" "${REGNAME}"
 
   action "Add ca-cert to the nodes"
   for node in $(kind get nodes --name "$CLUNAME"); do
@@ -143,7 +114,7 @@ action "Deploy chart"
 if helm list --all-namespaces --all | grep -q "cert-manager"; then
   echo "Already installed"
 else
-  helm install cert-manager jetstack/cert-manager --version v1.17.2 --hide-notes \
+  helm install cert-manager jetstack/cert-manager --version v1.17.2 --hide-notes  --wait \
     --namespace cert-manager --create-namespace \
     --set crds.enabled=true 
 fi
@@ -173,4 +144,38 @@ if kubectl get namespaces | grep -q ingress-nginx; then
   echo "Already installed"
 else
   kubectl apply --server-side -f ./ingress-controller.yaml
+  kubectl wait --for condition=ready --namespace ingress-nginx \
+    --selector app.kubernetes.io/name=ingress-nginx \
+    --selector app.kubernetes.io/component=controller \
+    --timeout 180s \
+    pod
 fi
+
+# ================================================================================================
+title "REGISTRY"
+if kubectl get namespaces | grep -q registry; then
+  echo "Already installed"
+else
+  kubectl apply --server-side -f ./registry.yaml
+fi
+
+# # ================================================================================================
+# title "ARGOCD"
+# add_helm_repo argo https://argoproj.github.io/argo-helm
+
+# if helm list --all-namespaces --all | grep -q "argocd"; then
+#   echo "Already installed"
+# else
+#   helm install argocd argo/argo-cd --hide-notes  --wait \
+#     --namespace argocd --create-namespace \
+#     --set 'global.domain=argocd.sandbox.local' \
+#     --set 'server.ingress.enabled=true' \
+#     --set 'server.ingress.ingressClassName=nginx' \
+#     --set 'server.ingress.tls=true' \
+#     --set 'server.ingress.annotations.nginx\.ingress\.kubernetes\.io\/force-ssl-redirect=true' \
+#     --set 'server.ingress.annotations.nginx\.ingress\.kubernetes\.io\/ssl-passthrough=true' \
+#     --set 'server.ingress.annotations.cert-manager\.io\/cluster-issuer=ca-issuer' \
+#     --set 'configs.cm.exec\.enabled=true' \
+#     --set 'dex.enabled=false' \
+#     --set 'notifications.enabled=false'
+# fi
