@@ -159,6 +159,14 @@ else
   kubectl apply --server-side -f ./registry.yaml
 fi
 
+# ================================================================================================
+title "FORGEJO"
+if kubectl get namespaces | grep -q forgejo; then
+  echo "Already installed"
+else
+  kubectl apply --server-side -f ./forgejo.yaml
+fi
+
 # # ================================================================================================
 # title "ARGOCD"
 # add_helm_repo argo https://argoproj.github.io/argo-helm
