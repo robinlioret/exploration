@@ -14,3 +14,9 @@ server:
 configs:
   cm:
     exec.enabled: true
+
+dex:
+  enabled: false
+
+notifications:
+  enabled: false

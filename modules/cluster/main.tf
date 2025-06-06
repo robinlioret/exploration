@@ -3,7 +3,7 @@ locals {
 }
 
 resource "kind_cluster" "this" {
-  name           = "sandbox"
+  name           = var.name
   wait_for_ready = true
 
   kind_config {

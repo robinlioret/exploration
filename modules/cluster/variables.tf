@@ -8,3 +8,7 @@ variable "data_path" {
   type    = string
   default = "."
 }
+
+variable "name" {
+  default = "sandbox"
+}
