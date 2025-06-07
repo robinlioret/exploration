@@ -183,21 +183,13 @@ title "ARGOCD"
 if $ENABLE_ARGOCD; then
   add_helm_repo argo https://argoproj.github.io/argo-helm
 
+  action "Deploy ArgoCD"
   if helm list --all-namespaces --all | grep -q "argocd"; then
     echo "Already installed"
   else
-    helm install argocd argo/argo-cd --hide-notes  --wait \
+    helm install argocd argo/argo-cd --hide-notes --wait --version 8.0.15 \
       --namespace argocd --create-namespace \
-      --set 'global.domain=argocd.sandbox.local' \
-      --set 'server.ingress.enabled=true' \
-      --set 'server.ingress.ingressClassName=nginx' \
-      --set 'server.ingress.tls=true' \
-      --set 'server.ingress.annotations.nginx\.ingress\.kubernetes\.io\/force-ssl-redirect=true' \
-      --set 'server.ingress.annotations.nginx\.ingress\.kubernetes\.io\/ssl-passthrough=true' \
-      --set 'server.ingress.annotations.cert-manager\.io\/cluster-issuer=ca-issuer' \
-      --set 'configs.cm.exec\.enabled=true' \
-      --set 'dex.enabled=false' \
-      --set 'notifications.enabled=false'
+      -f ./argocd.values.yaml
   fi
 else
   echo "Disabled"
