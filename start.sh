@@ -34,6 +34,7 @@ CLUNAME=${CLUSTER_NAME:-sandbox}
 ENABLE_REGISTRY=${REGISTRY:-false}
 ENABLE_ARGOCD=${ARGOCD:-false}
 ENABLE_FORGEJO=${FORGEJO:-false}
+ENABLE_TELEPRESENCE=${TELEPRESENCE:-false}
 
 # ================================================================================================
 title "CLUSTER"
@@ -190,6 +191,20 @@ if $ENABLE_ARGOCD; then
     helm install argocd argo/argo-cd --hide-notes --wait --version 8.0.15 \
       --namespace argocd --create-namespace \
       -f ./argocd.values.yaml
+  fi
+else
+  echo "Disabled"
+fi
+
+# ================================================================================================
+title "TELEPRESENCE"
+if $ENABLE_TELEPRESENCE; then
+  if helm list --all-namespaces --all | grep -q "telepresence"; then
+    echo "Already installed"
+  else
+    helm install telepresence oci://ghcr.io/telepresenceio/telepresence-oss --hide-notes --wait --version 2.22.6 \
+      --namespace telepresence --create-namespace \
+      -f ./telepresence.values.yaml
   fi
 else
   echo "Disabled"

@@ -9,14 +9,14 @@ server:
     annotations:
       nginx.ingress.kubernetes.io/force-ssl-redirect: !!str true
       nginx.ingress.kubernetes.io/ssl-passthrough: !!str true
-      server.ingress.annotations.cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/cluster-issuer: ca-issuer
 
 configs:
   cm:
     exec.enabled: true
   tls:
     certificates:
-      sandbox.local: |
+      forgejo.sandbox.local: |
         -----BEGIN CERTIFICATE-----
         MIIBazCCARCgAwIBAgIQTy3AtZTgPk2hmNXjMuOZGjAKBggqhkjOPQQDAjAVMRMw
         EQYDVQQDEwpEdW1teSBJbmMuMB4XDTI1MDUyMjA0NTE0OFoXDTI1MDgyMDA0NTE0
