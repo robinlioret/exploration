@@ -28,16 +28,10 @@ action "Create temp dir"
 DIR=${DIR:-$HOME/devenv}
 test -d "$DIR" || mkdir -p "$DIR"
 IP=$(hostname -i | cut -d' ' -f1)
-REGNAME=${REGISTRY_NAME:-registry.sandbox.local}
-REGPORT=${REGISTRY_PORT:-5001}
-CLUNAME=${CLUSTER_NAME:-sandbox}
-ENABLE_REGISTRY=${REGISTRY:-false}
-ENABLE_ARGOCD=${ARGOCD:-false}
-ENABLE_FORGEJO=${FORGEJO:-false}
-ENABLE_TELEPRESENCE=${TELEPRESENCE:-false}
 
 # ================================================================================================
 title "CLUSTER"
+CLUNAME=${CLUSTER_NAME:-sandbox}
 if  kind get clusters -q | grep -q sandbox; then
   action "Running already"
 else
@@ -157,6 +151,9 @@ fi
 
 # ================================================================================================
 title "REGISTRY"
+REGNAME=${REGISTRY_NAME:-registry.sandbox.local}
+REGPORT=${REGISTRY_PORT:-5001}
+ENABLE_REGISTRY=${REGISTRY:-false}
 if $ENABLE_REGISTRY; then
   if kubectl get namespaces | grep -q registry; then
     echo "Already installed"
@@ -169,6 +166,7 @@ fi
 
 # ================================================================================================
 title "FORGEJO"
+ENABLE_FORGEJO=${FORGEJO:-false}
 if $ENABLE_FORGEJO; then
   if kubectl get namespaces | grep -q forgejo; then
     echo "Already installed"
@@ -181,6 +179,7 @@ fi
 
 # ================================================================================================
 title "ARGOCD"
+ENABLE_ARGOCD=${ARGOCD:-false}
 if $ENABLE_ARGOCD; then
   add_helm_repo argo https://argoproj.github.io/argo-helm
 
@@ -197,7 +196,23 @@ else
 fi
 
 # ================================================================================================
+title "KARGO"
+ENABLE_KARGO=${KARGO:-false}
+if $ENABLE_KARGO; then
+  action "Deploy Kargo"
+  if kubectl get -n argocd applications | grep -q kargo; then
+    echo "Already deployed"
+  else
+    sed -i
+    kubectl apply -f kargo.yaml
+  fi
+else
+  echo "Disabled"
+fi
+
+# ================================================================================================
 title "TELEPRESENCE"
+ENABLE_TELEPRESENCE=${TELEPRESENCE:-false}
 if $ENABLE_TELEPRESENCE; then
   if helm list --all-namespaces --all | grep -q "telepresence"; then
     echo "Already installed"

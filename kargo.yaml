@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kargo
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: kargo
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: ghcr.io/akuity/kargo-charts
+    chart: kargo
+    targetRevision: 1.5.3
+    helm:
+      valuesObject:
+        api:
+          host: kargo.sandbox.local
+          adminAccount:
+            passwordHash: $2y$10$uRcZgQSm/LqDpXDmDWwKXuvxe801Y1/uJR2N/arcoQgrfjZi74qey
+            tokenSigningKey: B8QOaZjYpuzhd34gvxWgxz28RYPhVJOY
+            tokenTTL: 24h
+          tls:
+            enabled: false
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            tls:
+              selfSignedCert: false
+            annotations:
+              cert-manager.io/cluster-issuer: ca-issuer
+              ingress.kubernetes.io/ssl-redirect: !!str true
+              ingress.kubernetes.io/force-ssl-redirect: !!str true
+        controller:
+          logLevel: DEBUG
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
