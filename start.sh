@@ -203,8 +203,14 @@ if $ENABLE_KARGO; then
   if kubectl get -n argocd applications | grep -q kargo; then
     echo "Already deployed"
   else
-    sed -i
     kubectl apply -f kargo.yaml
+  fi
+
+  action "Create CA Bundle configmap"
+  if kubectl get -n kargo configmap | grep -q cabundle; then
+    echo "Already deployed"
+  else
+    kubectl create configmap -n kargo cabundle --from-file=ca-bundle.crt=ca/ca.crt
   fi
 else
   echo "Disabled"

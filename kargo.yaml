@@ -20,6 +20,8 @@ spec:
             passwordHash: $2y$10$uRcZgQSm/LqDpXDmDWwKXuvxe801Y1/uJR2N/arcoQgrfjZi74qey
             tokenSigningKey: B8QOaZjYpuzhd34gvxWgxz28RYPhVJOY
             tokenTTL: 24h
+          cabundle:
+            configMapName: cabundle
           tls:
             enabled: false
           ingress:
@@ -33,6 +35,8 @@ spec:
               ingress.kubernetes.io/force-ssl-redirect: !!str true
         controller:
           logLevel: DEBUG
+          cabundle:
+            configMapName: cabundle
   syncPolicy:
     automated:
       prune: true
