@@ -6,4 +6,4 @@ A simple repository I use to explore awesome techs.
 
 - [Docker](https://www.docker.com/)
 - [Kind](https://kind.sigs.k8s.io/)
-- [Terragrunt](https://terragrunt.gruntwork.io/)
+- [Kubectl](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/)
