@@ -204,6 +204,7 @@ if $ENABLE_KARGO; then
     echo "Already deployed"
   else
     kubectl apply -f kargo.yaml
+    while true; do kubectl get ns kargo && break; sleep 2; done
   fi
 
   action "Create CA Bundle configmap"
