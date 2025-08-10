@@ -1,9 +1,13 @@
+.PHONY: checks
+checks:
+	bash ./checks.sh
+
 .PHONY: start
-start:
+start: checks
 	bash ./start.sh
 
 .PHONY: stop
-stop:
+stop: checks
 	bash ./stop.sh
 
 .PHONY: restart
